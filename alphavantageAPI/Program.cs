@@ -6,6 +6,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+var apiKey = builder.Configuration["AlphaVantage:ApiKey"];
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
