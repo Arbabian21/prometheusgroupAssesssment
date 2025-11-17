@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using alphavantageAPI.Services;
 using alphavantageAPI.Models;
+using System.linq;
 
 namespace alphavantageAPI.Controllers
 {
@@ -18,7 +19,7 @@ namespace alphavantageAPI.Controllers
 
         // GET route
         [HttpGet("summary")]
-        public async Task<ActionResult<List<IntradayEndpointDataShape>>> GetIntradayData([FromQuery] string symbol)
+        public async Task<ActionResult<List<DaySummaryDataShape>>> GetIntradayData([FromQuery] string symbol)
         {
             // logic for no symbol provided
             if (string.IsNullOrEmpty(symbol))
@@ -37,21 +38,21 @@ namespace alphavantageAPI.Controllers
                 // gropu data by day
                 var groupedData = lastMonthData
                     .GroupBy(d => d.Timestamp.Date)
-                    .Select(g => new IntradayEndpointDataShape
+                    .OrderBy(d => d.Key)
+                    .Select(g => new DaySummaryDataShape
                     {
                     Day = g.Key.ToString("yyyy-MM-dd"),
                     LowAverage = g.Average(x => (double)x.Low),
                     HighAverage = g.Average(x => (double)x.High),
                     Volume = g.Sum(x => x.Volume)
                     })
-                    .OrderBy(d => d.Key)
                     .ToList();
                 
                 return Ok(groupedData);
             }
             catch (Exception ex)
             {
-                // Log the exception (not implemented here for brevity)
+                //exception
                 return StatusCode(500, "An error occurred while processing your request: " + ex.Message);
             }
         }
