@@ -1,17 +1,17 @@
 // implementations of the interface
 
 using alphavantageAPI.Models;
-using System.text.Json;
+using System.Text.Json;
 
 
 namespace alphavantageAPI.Services
 {
-    public class AlphaVantageIntradayDataGetService : IAlphaVantageIntradayDataGetService
+    public class AlphaVantageIntradayDataService : IAlphaVantageIntradayDataService
     {
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly Iconfiguration _configuration;
+        private readonly IConfiguration _configuration;
         
-        public AlphaVantageIntradayDataGetService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
+        public AlphaVantageIntradayDataService(IHttpClientFactory httpClientFactory, IConfiguration configuration)
         {
             _httpClientFactory = httpClientFactory;
             _configuration = configuration;
@@ -19,7 +19,7 @@ namespace alphavantageAPI.Services
 
         public async Task<List<IntradayEndpointDataShape>> GetIntradayDataAsync(string symbol)
         {
-            var client = _httpClientFactory.createClient("AlphaVantage");
+            var client = _httpClientFactory.CreateClient("AlphaVantage");
 
             var apiKey = _configuration["AlphaVantage:ApiKey"]; //from user secrets
             // logic for missing api key
@@ -45,13 +45,38 @@ namespace alphavantageAPI.Services
             }
 
             var result = new List<IntradayEndpointDataShape>();
-            var series = timeSeriesJson.Value;
+            var series = timeSeriesJson;;
 
             // logic to parse each interval in the time series
             foreach (var entry in series.EnumerateObject())
             {
                 var timestamp = DateTime.Parse(entry.Name);
                 var data = entry.Value;
+                
+                //5 min example structure
+                // "Time Series (5min)": {
+                //     "2009-01-30 19:55:00": {
+                //         "1. open": "49.3475",
+                //         "2. high": "49.3475",
+                //         "3. low": "49.3475",
+                //         "4. close": "49.3475",
+                //         "5. volume": "209"
+                //     },
+                //     "2009-01-30 17:40:00": {
+                //         "1. open": "49.3744",
+                //         "2. high": "49.3744",
+                //         "3. low": "49.3744",
+                //         "4. close": "49.3744",
+                //         "5. volume": "84726"
+                //     },
+                //     "2009-01-30 17:15:00": {
+                //         "1. open": "49.6682",
+                //         "2. high": "49.6682",
+                //         "3. low": "49.6682",
+                //         "4. close": "49.6682",
+                //         "5. volume": "2651"
+                //     }
+                // }
 
                 var dataShape = new IntradayEndpointDataShape
                 {
@@ -66,7 +91,7 @@ namespace alphavantageAPI.Services
                 result.Add(dataShape);
             }
 
-            return result;
+            return result; 
         }
     }
 }
