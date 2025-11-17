@@ -1,0 +1,6 @@
+@alphavantageAPI_HostAddress = http://localhost:5057
+
+GET {{alphavantageAPI_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
