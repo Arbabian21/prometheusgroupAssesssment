@@ -1,0 +1,9 @@
+I was gonna make a front end for this assesment but the project didn't require it and 
+I recall that in my previous interview with Brian, he was more so interested in my 
+exposure to dotnet and backend work- thus i decided to only focus on having as good 
+of a back end implementation as possible. It was not easy as I had to google a lot of 
+basic dotnet stuff. I'm not sure what some of these libraries are doing under the hood 
+but throwing in a few import (using) lines and some copy paste configuration allowed me 
+to focus on my implementation and learning of the Model, Service, Controller Architecture 
+as well as the whole abstraction and implementation of interfaces to allow for dependency 
+injection.
