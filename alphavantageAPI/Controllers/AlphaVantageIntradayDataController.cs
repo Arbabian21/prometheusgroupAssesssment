@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using alphavantageAPI.Services;
 using alphavantageAPI.Models;
-using System.linq;
+using System.Linq;
 
 namespace alphavantageAPI.Controllers
 {
@@ -42,8 +42,8 @@ namespace alphavantageAPI.Controllers
                     .Select(g => new DaySummaryDataShape
                     {
                     Day = g.Key.ToString("yyyy-MM-dd"),
-                    LowAverage = g.Average(x => (double)x.Low),
-                    HighAverage = g.Average(x => (double)x.High),
+                    lowAverage = g.Average(x => (double)x.Low),
+                    highAverage = g.Average(x => (double)x.High),
                     Volume = g.Sum(x => x.Volume)
                     })
                     .ToList();

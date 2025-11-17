@@ -1,11 +1,17 @@
+using alphavantageAPI.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddHttpClient("AlphaVantage", client => { client.BaseAddress = new Uri("https://www.alphavantage.co/query"); });
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen();
+builder.Services.AddHttpClient("AlphaVantage", (sp, client) => 
+{ 
+    var config = sp.GetRequiredService<IConfiguration>();
+    client.BaseAddress = new Uri("https://www.alphavantage.co/query"); 
+});
+builder.Services.AddScoped<IAlphaVantageIntradayDataService, AlphaVantageIntradayDataService>();
 
 
 
@@ -19,7 +25,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
 // var summaries = new[]
 // {
@@ -41,6 +47,7 @@ app.UseHttpsRedirection();
 // .WithName("GetWeatherForecast")
 // .WithOpenApi();
 
+app.MapControllers();
 app.Run();
 
 // record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)

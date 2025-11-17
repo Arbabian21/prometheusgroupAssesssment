@@ -28,7 +28,7 @@ namespace alphavantageAPI.Services
                 throw new InvalidOperationException("API key is not configured.");
             }
 
-            var url = $"?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=15min&apikey={apiKey}";
+            var url = $"?function=TIME_SERIES_INTRADAY&symbol={symbol}&interval=15min&outputsize=full&apikey={apiKey}";
             
             var response = await client.GetAsync(url);
             response.EnsureSuccessStatusCode();
@@ -45,7 +45,7 @@ namespace alphavantageAPI.Services
             }
 
             var result = new List<IntradayEndpointDataShape>();
-            var series = timeSeriesJson;;
+            var series = timeSeriesJson;
 
             // logic to parse each interval in the time series
             foreach (var entry in series.EnumerateObject())
@@ -81,11 +81,11 @@ namespace alphavantageAPI.Services
                 var dataShape = new IntradayEndpointDataShape
                 {
                     Timestamp = timestamp,
-                    Open = decimal.Parse(data.GetProperty("1. open").GetString()),
-                    High = decimal.Parse(data.GetProperty("2. high").GetString()),
-                    Low = decimal.Parse(data.GetProperty("3. low").GetString()),
-                    Close = decimal.Parse(data.GetProperty("4. close").GetString()),
-                    Volume = long.Parse(data.GetProperty("5. volume").GetString())
+                    Open = decimal.Parse(data.GetProperty("1. open").GetString()!),
+                    High = decimal.Parse(data.GetProperty("2. high").GetString()!),
+                    Low = decimal.Parse(data.GetProperty("3. low").GetString()!),
+                    Close = decimal.Parse(data.GetProperty("4. close").GetString()!),
+                    Volume = long.Parse(data.GetProperty("5. volume").GetString()!)
                 };
 
                 result.Add(dataShape);
