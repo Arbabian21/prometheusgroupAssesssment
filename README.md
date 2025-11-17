@@ -59,13 +59,13 @@ You should see something like:
 Open your terminal and run:
 
 ```bash
-git clone https://github.com/<your-username>/<your-repo-name>.git
+git clone https://github.com/Arbabian21/prometheusgroupAssesssment
 ```
 
 Then enter the project directory:
 
 ```bash
-cd <your-repo-name>
+cd prometheusgroupAssesssment
 cd Backend
 ```
 
